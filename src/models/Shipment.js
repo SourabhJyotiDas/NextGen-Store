@@ -8,5 +8,7 @@ const ShipmentSchema = new mongoose.Schema({
   status: { type: String, enum: ["pending", "shipped", "delivered"], default: "pending" },
 },{ timestamps: true });
 
-const Shipment = mongoose.model("Shipment", ShipmentSchema);
+
+const Shipment = mongoose.models.Shipment || mongoose.model("Shipment", ShipmentSchema);
+
 export default Shipment;

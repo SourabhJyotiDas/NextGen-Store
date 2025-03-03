@@ -7,5 +7,8 @@ const ReviewSchema = new mongoose.Schema({
   comment: String,
 },{ timestamps: true });
 
-const Review = mongoose.model("Review", ReviewSchema);
+
+
+const Review = mongoose.models.Review || mongoose.model("Review", ReviewSchema);
+
 export default Review;

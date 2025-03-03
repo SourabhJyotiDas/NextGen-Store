@@ -7,5 +7,7 @@ const CouponSchema = new mongoose.Schema({
   usageLimit: Number,
 },{ timestamps: true });
 
-const Coupon = mongoose.model("Coupon", CouponSchema);
+
+const Coupon = mongoose.models.Coupon || mongoose.model("Coupon", CouponSchema);
+
 export default Coupon;

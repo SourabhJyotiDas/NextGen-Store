@@ -9,5 +9,7 @@ const PaymentSchema = new mongoose.Schema({
   transactionId: String,
 },{ timestamps: true });
 
-const Payment = mongoose.model("Payment", PaymentSchema);
+
+const Payment = mongoose.models.Payment || mongoose.model("Payment", PaymentSchema);
+
 export default Payment;

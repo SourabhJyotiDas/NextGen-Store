@@ -9,9 +9,9 @@ const UserSchema = new mongoose.Schema({
       public_id: String,
       url: String,
    },
-   address: [String],
    role: { type: String, enum: ["customer", "admin", "seller"], default: "customer" },
-   verify: Boolean
+   gender: { type: String, enum: ["male", "female", "others"], default: "male" },
+   verify: { type: Boolean, default: false }
 }, { timestamps: true });
 
 

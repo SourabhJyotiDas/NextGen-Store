@@ -27,16 +27,16 @@ export default function Home() {
             }
           );
 
-          toast.success(data?.message, {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
+          // toast.success(data?.message, {
+          //   position: "top-center",
+          //   autoClose: 2000,
+          //   hideProgressBar: false,
+          //   closeOnClick: false,
+          //   pauseOnHover: true,
+          //   draggable: true,
+          //   progress: undefined,
+          //   theme: "dark",
+          // });
 
           router.push("/user/profile");
         } catch (error) {

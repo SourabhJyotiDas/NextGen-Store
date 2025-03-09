@@ -8,7 +8,7 @@ export async function POST(req) {
   try {
     const { name, email, imageUrl } = await req.json();
 
-    if (!name || !email || !imageUrl) {
+    if (!name || !email) {
       return Response.json(
         {
           success: false,
@@ -17,7 +17,6 @@ export async function POST(req) {
         { status: 500 }
       );
     }
-
 
     let user = await User.findOne({ email });
 

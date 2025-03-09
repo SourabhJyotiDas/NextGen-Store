@@ -1,25 +1,27 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Loading from "@/components/Loading";
 import { toast } from "react-toastify";
-import { FaGoogle, FaUser, FaLock } from "react-icons/fa";
+import { FaGoogle, FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import Link from "next/link";
+import Loading from "@/components/Loading";
 
-export default function SignInPage() {
+export default function RegisterPage() {
   const { data: session, status } = useSession();
+
   const router = useRouter();
+
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if(session) router.push("/user/profile");
-  }, [session])
-  
+    if (session) router.push("/user/profile");
+  }, [session]);
 
   // Redirect authenticated users to profile
   useEffect(() => {
@@ -27,12 +29,11 @@ export default function SignInPage() {
       const createUser = async () => {
         try {
           setLoading(true);
-          const { data } = await axios.post("/api/user/create", {
+          await axios.post("/api/user/create", {
             name: session.user.name,
             email: session.user.email,
             imageUrl: session.user.image || "",
           });
-          toast.success(data.message);
           setLoading(false);
         } catch (error) {
           toast.error(error.message);
@@ -43,20 +44,34 @@ export default function SignInPage() {
     }
   }, [status, session, router]);
 
-  // Handle email/password sign-in
-  const handleSignIn = async () => {
+  const handleRegister = async () => {
     setLoading(true);
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
+    try {
+      const { data } = await axios.post("/api/user/register", {
+        name,
+        email,
+        password,
+      });
 
-    if (result?.error) {
-      toast.error("Invalid email or password");
+      toast.success(data.message);
+
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.error) {
+        toast.error("Invalid email or password");
+        setLoading(false);
+      } else {
+        router.push("/user/profile");
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+      toast.error("Failed to register. Try again.");
+    } finally {
       setLoading(false);
-    } else {
-      router.push("/user/profile");
     }
   };
 
@@ -64,24 +79,38 @@ export default function SignInPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
-        {/* Left Side - Info Panel (Hidden on Mobile) */}
+      <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white shadow-lg rounded-lg">
+        {/* Left Side - Info Panel (Hidden on Small Screens) */}
         <div className="hidden md:flex md:w-1/3 bg-blue-600 text-white p-6 md:p-8 flex-col justify-center">
-          <h2 className="text-xl md:text-2xl font-semibold mb-2">Sign In</h2>
+          <h2 className="text-xl md:text-2xl font-semibold mb-2">
+            Create an Account
+          </h2>
           <p className="text-sm md:text-base text-gray-200">
-            Get access to your Orders, Wishlist, and Recommendations.
+            Join us and enjoy exclusive benefits, personalized offers, and more!
           </p>
         </div>
 
-        {/* Right Side - Sign In Form */}
+        {/* Right Side - Register Form */}
         <div className="w-full md:w-2/3 p-6 md:p-10">
           <h2 className="text-lg md:text-2xl font-bold text-gray-900 text-center mb-6 md:hidden">
-            Sign In
+            Register
           </h2>
+
+          {/* Name Input */}
+          <div className="mb-4 flex items-center border-b border-gray-400 px-3 py-2 focus-within:border-blue-600">
+            <FaUser className="text-gray-600 mr-2 md:mr-3 text-sm md:text-lg" />
+            <input
+              type="text"
+              placeholder="Full Name"
+              className="w-full bg-transparent focus:outline-none text-gray-800 text-sm md:text-base"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
 
           {/* Email Input */}
           <div className="mb-4 flex items-center border-b border-gray-400 px-3 py-2 focus-within:border-blue-600">
-            <FaUser className="text-gray-600 mr-2 md:mr-3 text-sm md:text-lg" />
+            <FaEnvelope className="text-gray-600 mr-2 md:mr-3 text-sm md:text-lg" />
             <input
               type="email"
               placeholder="Enter Email"
@@ -96,18 +125,18 @@ export default function SignInPage() {
             <FaLock className="text-gray-600 mr-2 md:mr-3 text-sm md:text-lg" />
             <input
               type="password"
-              placeholder="Enter Password"
+              placeholder="Create Password"
               className="w-full bg-transparent focus:outline-none text-gray-800 text-sm md:text-base"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
-          {/* Sign In Button */}
+          {/* Register Button */}
           <button
-            onClick={handleSignIn}
-            className="bg-green-600 text-white font-semibold text-sm md:text-lg px-6 py-3 w-full hover:bg-green-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105 mb-4">
-            Sign In
+            onClick={handleRegister}
+            className="cursor-pointer bg-green-600 text-white font-semibold text-sm md:text-lg px-6 py-3 w-full hover:bg-green-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105 mb-4">
+            Register
           </button>
 
           {/* OR Separator */}
@@ -119,24 +148,24 @@ export default function SignInPage() {
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
 
-          {/* Google Sign-In Button */}
+          {/* Google Sign-Up Button */}
           <button
             onClick={() => {
               setLoading(true);
               signIn("google");
             }}
-            className="bg-blue-600 text-white font-semibold text-sm md:text-lg px-6 py-3 w-full hover:bg-blue-700 transition-all flex items-center justify-center gap-2 md:gap-3 shadow-md hover:shadow-lg transform hover:scale-105">
-            <FaGoogle className="text-white text-base md:text-xl" /> Sign in
+            className="cursor-pointer bg-blue-600 text-white font-semibold text-sm md:text-lg px-6 py-3 w-full hover:bg-blue-700 transition-all flex items-center justify-center gap-2 md:gap-3 shadow-md hover:shadow-lg transform hover:scale-105">
+            <FaGoogle className="text-white text-base md:text-xl" /> Sign up
             with Google
           </button>
 
-          {/* Signup Link */}
+          {/* Sign-in Option */}
           <p className="mt-4 text-xs md:text-sm text-gray-600 text-center">
-            New to the site?{" "}
+            Already have an account?{" "}
             <Link
-              href="/user/auth/register"
+              href="/user/auth/signin"
               className="text-blue-600 cursor-pointer font-semibold hover:underline">
-              Create an account
+              Sign in here
             </Link>
           </p>
         </div>

@@ -43,20 +43,21 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 flex flex-col items-center">
-      <div className="w-full max-w-3xl bg-gray-100 shadow-lg rounded-lg p-6 mt-10">
-        <div className="flex items-center space-x-4 border-b border-gray-300 pb-4">
+    <div className="min-h-screen bg-gray-50 text-gray-900 flex justify-center px-4 md:px-8 py-6">
+      <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-4 sm:p-6">
+        {/* Profile Section */}
+        <div className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-start space-y-4 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-4">
           <div className="relative">
             {session?.data?.avatar?.url ? (
               <Image
                 src={session?.data?.avatar?.url}
                 alt="Profile Picture"
-                width={130}
-                height={130}
-                className="w-32 h-32 rounded-full border-4 border-green-500 object-cover shadow-md p-1"
+                width={100}
+                height={100}
+                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-green-500 object-cover shadow-md p-1"
               />
             ) : (
-              <FaUserAstronaut className="w-32 h-32 text-8xl rounded-full border-4 border-green-500 object-cover shadow-md p-1" />
+              <FaUserAstronaut className="w-24 h-24 sm:w-28 sm:h-28 text-6xl sm:text-7xl rounded-full border-4 border-green-500 object-cover shadow-md p-1" />
             )}
             <button
               className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md border border-gray-300 hover:bg-gray-200 transition"
@@ -65,61 +66,55 @@ export default function Profile() {
               <FiEdit className="text-blue-600 cursor-pointer " />
             </button>
           </div>
-          <div>
-            <h2 className="text-xl font-semibold">{session?.data?.name}</h2>
+          <div className="text-center sm:text-left">
+            <h2 className="text-lg sm:text-xl font-semibold">{session?.data?.name}</h2>
             <p className="text-sm text-gray-600">{session?.data?.email}</p>
           </div>
         </div>
 
+        {/* Email Verification Section */}
         {session?.data?.verify === false && (
-          <div className="mt-4 p-4 bg-white shadow-md rounded-lg flex items-center justify-between">
+          <div className="mt-4 p-3 bg-white shadow-md rounded-lg flex flex-col sm:flex-row items-center justify-between">
             <div className="flex items-center space-x-3">
-              <FiMail className="text-blue-500 text-2xl" />
+              <FiMail className="text-blue-500 text-xl sm:text-2xl" />
               <div>
-                <h3 className="text-md font-medium">Add/Verify your Email</h3>
-                <p className="text-sm text-gray-600">Get latest updates of your orders</p>
+                <h3 className="text-sm sm:text-md font-medium">Verify your Email</h3>
+                <p className="text-xs sm:text-sm text-gray-600">Get the latest updates</p>
               </div>
             </div>
             <button
               onClick={() => console.log("Update Email")}
-              className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
+              className="px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700 transition mt-3 sm:mt-0"
             >
               Update
             </button>
           </div>
         )}
 
-        <div className="mt-5 space-y-2">
-          <MenuItem icon={<FiBox />} label="My Orders" href="/orders" />
+        {/* Menu Section */}
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-2 gap-2">
+          <MenuItem icon={<FiBox />} label="Orders" href="/orders" />
           <MenuItem icon={<FiHeart />} label="Wishlist" href="/wishlist" />
           <MenuItem icon={<FiSettings />} label="Edit Profile" href="/user/settings" />
           <MenuItem icon={<FiMapPin />} label="Addresses" href="/addresses" />
-          <MenuItem icon={<FiCreditCard />} label="Payment Methods" href="/payments" />
+          <MenuItem icon={<FiCreditCard />} label="Payments" href="/payments" />
           <MenuItem icon={<FiTag />} label="Coupons" href="/coupons" />
           <MenuItem icon={<FiShield />} label="Privacy" href="/privacy" />
           <MenuItem icon={<FiUserCheck />} label="Membership" href="/membership" />
           <MenuItem icon={<FiStar />} label="Reviews" href="/reviews" />
-          <MenuItem icon={<FiShoppingBag />} label="Sell on Store" href="/sell" />
-          <MenuItem icon={<FiHelpCircle />} label="Help & Support" href="/help" />
+          <MenuItem icon={<FiShoppingBag />} label="Sell" href="/sell" />
+          <MenuItem icon={<FiHelpCircle />} label="Help" href="/help" />
           <MenuItem icon={<FiLogOut />} label="Logout" onClick={() => setLogoutModalOpen(true)} />
         </div>
       </div>
 
+      {/* Logout Confirmation Modal */}
       <ConfirmModal
         isOpen={isLogoutModalOpen}
         onClose={() => setLogoutModalOpen(false)}
         onConfirm={() => {
           signOut();
-          toast.success("Logout successfully", {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
+          toast.success("Logout successful!", { position: "top-center", autoClose: 2000 });
           setLogoutModalOpen(false);
           setLoading(true);
         }}
@@ -130,19 +125,26 @@ export default function Profile() {
   );
 }
 
+/* Reusable Menu Item Component */
 function MenuItem({ icon, label, href, onClick }) {
   if (href) {
     return (
-      <Link href={href} className="flex items-center space-x-3 w-full px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition cursor-pointer">
-        <span className="text-gray-600 text-lg">{icon}</span>
-        <span className="text-gray-900 text-md font-medium">{label}</span>
+      <Link
+        href={href}
+        className="flex flex-col items-center sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition text-center sm:text-left"
+      >
+        <span className="text-gray-600 text-xl">{icon}</span>
+        <span className="text-gray-900 text-sm sm:text-md font-medium">{label}</span>
       </Link>
     );
   }
   return (
-    <button onClick={onClick} className="flex items-center space-x-3 w-full px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition cursor-pointer">
-      <span className="text-gray-600 text-lg">{icon}</span>
-      <span className="text-gray-900 text-md font-medium">{label}</span>
+    <button
+      onClick={onClick}
+      className="cursor-pointer flex flex-col items-center sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition text-center sm:text-left"
+    >
+      <span className="text-gray-600 text-xl">{icon}</span>
+      <span className="text-gray-900 text-sm sm:text-md font-medium">{label}</span>
     </button>
   );
 }

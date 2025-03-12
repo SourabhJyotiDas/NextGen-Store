@@ -6,10 +6,12 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi"; // Using react-icons
 import { FaUserAstronaut } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // ✅ Add missing state for mobile menu
   const { data: session } = useSession();
+
 
   return (
     <nav className="bg-gray-900 text-white p-4">
@@ -66,9 +68,9 @@ const Navbar = () => {
             </Link>
           ) : (
             <Link
-              href="/user/auth/signin"
+              href="/homepage"
               className="block py-2 px-4 hover:bg-gray-700 md:hover:bg-transparent">
-              Sign in
+              Account
             </Link>
           )}
         </div>

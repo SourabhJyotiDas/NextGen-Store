@@ -20,7 +20,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (session) router.push("/user/profile");
+    if (session) router.replace("/user/profile"); // Redirect without adding history
   }, [session]);
 
   // Redirect authenticated users to profile

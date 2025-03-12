@@ -17,9 +17,11 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if(session) router.push("/user/profile");
-  }, [session])
-  
+    if (session) {
+      router.replace("/user/profile"); // Redirect without adding history
+    }
+  }, [session, router]); // Added router to dependencies for clarity
+
 
   // Redirect authenticated users to profile
   useEffect(() => {
@@ -32,7 +34,7 @@ export default function SignInPage() {
             email: session.user.email,
             imageUrl: session.user.image || "",
           });
-          toast.success(data.message);
+          // toast.success(data.message);
           setLoading(false);
         } catch (error) {
           toast.error(error.message);

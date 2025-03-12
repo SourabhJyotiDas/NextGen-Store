@@ -11,7 +11,8 @@ const UserSchema = new mongoose.Schema({
    },
    role: { type: String, enum: ["customer", "admin", "seller"], default: "customer" },
    gender: { type: String, enum: ["male", "female", "others"], default: "male" },
-   verify: { type: Boolean, default: false }
+   verify: { type: Boolean, default: false },
+   verificationCode: Number
 }, { timestamps: true });
 
 

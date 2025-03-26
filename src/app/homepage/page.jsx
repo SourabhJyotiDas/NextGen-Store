@@ -1,21 +1,32 @@
-
 "use client";
+import { useRouter } from "next/navigation"; 
+import i18next from "@/app/i18n"; // ✅ Import initialized i18next
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 
-export default function Home() {
-  const { t } = useTranslation("common");
+export default function LanguageSwitcher() {
   const router = useRouter();
+  const { t } = useTranslation();
 
-  const changeLanguage = (lang) => {
-    router.push("/", { locale: lang });
+  const changeLanguage = async (lang) => {
+    await i18next.changeLanguage(lang); // ✅ Works now!
+    router.refresh(); // ✅ Refresh to apply changes
   };
 
   return (
-    <div>
+    <nav>
       <h1>{t("welcome")}</h1>
-      <button onClick={() => changeLanguage("en")}>{t("change_language")} (English)</button>
-      <button onClick={() => changeLanguage("as")}>{t("change_language")} (Assamese)</button>
-    </div>
+      <button 
+        className="cursor-pointer px-10 py-3 bg-blue-500 mx-5" 
+        onClick={() => changeLanguage("en")}
+      >
+        🇬🇧 English
+      </button>
+      <button 
+        className="cursor-pointer px-10 py-3 bg-green-500 mx-5" 
+        onClick={() => changeLanguage("as")}
+      >
+        🇮🇳 Assamese
+      </button>
+    </nav>
   );
 }

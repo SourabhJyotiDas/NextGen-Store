@@ -1,7 +1,8 @@
-module.exports = {
-   i18n: {
-     locales: ["en", "as"], // English (en) & Assamese (as)
-     defaultLocale: "en",
-   },
- };
+ module.exports = {
+  i18n: {
+    locales: ["en", "as"], // English & Assamese
+    defaultLocale: "en",
+  },
+};
+
  

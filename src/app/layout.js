@@ -1,12 +1,11 @@
 "use client";
+import { appWithTranslation } from "next-i18next";
 import Navbar from "@/components/Navbar";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import "./globals.css";
 import AuthProvider from "@/context/authProvider";
 
-
-
-export default function RootLayout({ children }) {
+function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
@@ -14,8 +13,10 @@ export default function RootLayout({ children }) {
           <ToastContainer />
           <Navbar />
           {children}
-        </AuthProvider >
+        </AuthProvider>
       </body>
     </html>
   );
 }
+
+export default appWithTranslation(RootLayout);

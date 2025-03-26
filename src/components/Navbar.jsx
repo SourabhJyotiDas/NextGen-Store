@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi"; // Using react-icons
 import { FaUserAstronaut } from "react-icons/fa";
-import { useRouter } from "next/router";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // ✅ Add missing state for mobile menu
@@ -34,7 +33,7 @@ const Navbar = () => {
             isOpen ? "block" : "hidden"
           } absolute md:static top-16 left-0 w-full md:w-auto bg-gray-900 md:flex md:space-x-3 text-center`}>
           <Link
-            href="/"
+            href="/homepage"
             className="block py-2 px-4 hover:bg-gray-700 md:hover:bg-transparent">
             Home
           </Link>

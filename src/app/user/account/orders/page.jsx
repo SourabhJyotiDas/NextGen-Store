@@ -67,9 +67,11 @@ export default function MyOrders() {
               height={80}
               className="rounded-lg"
             />
-            <div className="ml-4 flex-grow">
-              <h2 className="text-sm font-semibold">{order.title}</h2>
+            <div className="ml-4 flex-grow space-y-5">
+              <div>
               <p className="mt-2 text-sm font-medium">{order.status}</p>
+              <h2 className="text-sm font-semibold">{order.title}</h2>
+              </div>
 
               {order.statusType === "delivered" && (
                 <div className="mt-2">

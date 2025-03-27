@@ -1,25 +1,24 @@
 "use client";
-import i18next from "i18next";
+
+import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-i18next.use(initReactI18next).init({
-  resources: {
-    en: {
-      translation: {
-        welcome: "Welcome!",
-      },
-    },
-    as: {
-      translation: {
-        welcome: "স্বাগতম!", // Assamese translation
-      },
-    },
-  },
-  lng: "en", // Default language
-  fallbackLng: "en",
-  interpolation: {
-    escapeValue: false,
-  },
-});
+// Import translations
+import enTranslation from "@/locales/en.json";
+import asTranslation from "@/locales/as.json";
 
-export default i18next;
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: { translation: enTranslation },
+      as: { translation: asTranslation },
+    },
+    lng: "en", // Default language
+    fallbackLng: "en", // Fallback language
+    interpolation: {
+      escapeValue: false, // React already escapes data
+    },
+  });
+
+export default i18n;

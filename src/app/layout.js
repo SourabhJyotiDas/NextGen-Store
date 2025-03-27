@@ -4,8 +4,15 @@ import Navbar from "@/components/Navbar";
 import { ToastContainer } from "react-toastify";
 import "./globals.css";
 import AuthProvider from "@/context/authProvider";
+import i18n from "@/app/i18n"; // Import i18n
+import { useEffect } from "react";
 
 function RootLayout({ children }) {
+
+  useEffect(() => {
+    i18n.changeLanguage(i18n.language || "en");
+  }, []);
+
   return (
     <html lang="en">
       <body>

@@ -1,6 +1,7 @@
 "use client";
 import { appWithTranslation } from "next-i18next";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
 import "./globals.css";
 import AuthProvider from "@/context/authProvider";
@@ -20,6 +21,7 @@ function RootLayout({ children }) {
           <ToastContainer />
           <Navbar />
           {children}
+          <Footer/>
         </AuthProvider>
       </body>
     </html>

@@ -26,6 +26,7 @@ export default function LanguageSwitcher() {
           >
             🇮🇳 Assamese
           </button>
+          <button  className="text-sm px-3 py-1 bg-green-500 rounded-md" onClick={() => changeLanguage("hi")}>🇮🇳 हिंदी</button>
         </div>
     </nav>
   );

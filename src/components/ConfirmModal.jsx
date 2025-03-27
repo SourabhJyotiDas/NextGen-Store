@@ -1,7 +1,12 @@
 "use client";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
 
 export default function ConfirmModal({ isOpen, onClose, onConfirm, title, message }) {
+
+  const { t } = useTranslation();
+
   // Close modal on escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -31,13 +36,13 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
             onClick={onClose}
             className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition cursor-pointer"
           >
-            Cancel
+           {t("cancel")}
           </button>
           <button
             onClick={onConfirm}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition cursor-pointer"
           >
-            Confirm
+             {t("confirm")}
           </button>
         </div>
       </div>

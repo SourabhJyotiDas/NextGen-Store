@@ -1,0 +1,25 @@
+{
+   "welcome": "স্বাগতম",
+   "home": "বাড়ি",
+   "products": "পণ্য",
+   "contact": "যোগাযোগ করুন",
+   "account": "অ্যাকাউন্ট",
+   "orders": "অর্ডার",
+   "wishlist": "ইচ্ছেতালিকা",
+   "edit_profile": "প্রোফাইল সম্পাদনা করুন",
+   "addresses": "ঠিকানা",
+   "payments": "পেমেন্ট",
+   "coupons": "কুপন",
+   "privacy": "গোপনীয়তা",
+   "membership": "সদস্যতা",
+   "reviews": "পর্যালোচনা",
+   "sell": "বিক্রি করুন",
+   "help": "সহায়তা",
+   "logout": "লগ আউট",
+   "confirmation_title": "আপনি কি নিশ্চিত?",
+   "logout_title": "আপনি কি সত্যিই লগআউট করতে চান?",
+   "cancel": "বাতিল",
+   "confirm": "নিশ্চিত করুন",
+   "logoutSuccess": "লগআউট সফল হয়েছে!"
+ }
+ 

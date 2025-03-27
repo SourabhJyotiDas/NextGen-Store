@@ -65,7 +65,7 @@ export default function RegisterPage() {
         toast.error("Invalid email or password");
         setLoading(false);
       } else {
-        router.push("/user/profile");
+        router.push("/user/account");
       }
     } catch (error) {
       console.error("Error registering user:", error);

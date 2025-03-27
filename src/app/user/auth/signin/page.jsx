@@ -18,7 +18,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (session) {
-      router.replace("/user/profile"); // Redirect without adding history
+      router.replace("/user/account"); // Redirect without adding history
     }
   }, [session, router]); // Added router to dependencies for clarity
 

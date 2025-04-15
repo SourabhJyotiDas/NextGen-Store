@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
+import FileUpload from "@/components/fileUpload";
 
 export default function EditProfile() {
   const { data: session, update } = useSession();
@@ -17,7 +18,7 @@ export default function EditProfile() {
   const [email, setEmail] = useState(session?.user?.email || "");
   const [phone, setPhone] = useState(session?.user?.phone || "");
   const [gender, setGender] = useState(session?.user?.gender || "");
-  const [avatar, setAvatar] = useState(session?.user?.avatar?.url || "");
+  const [avatar, setAvatar] = useState(session?.user?.image || "");
   const [isEmailModalOpen, setEmailModalOpen] = useState(false);
   const [isVerificationOpen, setVerificationOpen] = useState(false);
   const [newEmail, setNewEmail] = useState("");
@@ -51,6 +52,10 @@ export default function EditProfile() {
     toast.success("Profile updated successfully!");
   };
 
+
+  const [showChooseFile,setShowChooseFile] = useState(false);
+
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -69,10 +74,15 @@ export default function EditProfile() {
             />
             <button
               className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md"
-              onClick={() => console.log("Change avatar")}>
+              onClick={() => setShowChooseFile(true)}>
               <FiCamera className="text-blue-600" />
             </button>
           </div>
+
+          {
+            showChooseFile && <FileUpload/>
+          }
+
           <input
             type="text"
             value={name}

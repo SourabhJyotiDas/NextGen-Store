@@ -1,19 +1,15 @@
-"use client";
-import { appWithTranslation } from "next-i18next";
+import './globals.css';
+import { ToastContainer } from "react-toastify";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ToastContainer } from "react-toastify";
-import "./globals.css";
-import AuthProvider from "@/context/authProvider";
-import i18n from "@/app/i18n"; // Import i18n
-import { useEffect } from "react";
+import AuthProvider from '@/context/authProvider';
 
-function RootLayout({ children }) {
+export const metadata = {
+  title: "NextGenStore",
+  description: "Perfect E-commerce website",
+};
 
-  useEffect(() => {
-    i18n.changeLanguage(i18n.language || "en");
-  }, []);
-
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
@@ -21,11 +17,9 @@ function RootLayout({ children }) {
           <ToastContainer />
           <Navbar />
           {children}
-          <Footer/>
+          <Footer />
         </AuthProvider>
       </body>
     </html>
   );
 }
-
-export default appWithTranslation(RootLayout);

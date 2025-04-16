@@ -5,11 +5,11 @@ const ProductSchema = new mongoose.Schema({
   description: String,
   price: Number,
   stock: Number,
-  category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
   images: [String],
+  video: String,
   ratings: [{ userId: mongoose.Schema.Types.ObjectId, rating: Number, comment: String }],
   sellerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-},{ timestamps: true });
+}, { timestamps: true });
 
 const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);
 

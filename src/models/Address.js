@@ -4,6 +4,7 @@ const AddressSchema = new mongoose.Schema({
    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User
    name: { type: String, required: true }, // Recipient's name
    phone: { type: String, required: true }, // Contact number
+   altPhone: { type: String}, // Contact number
    pincode: { type: String, required: true }, // ZIP/Postal Code
    state: { type: String, required: true }, // State
    city: { type: String, required: true }, // City

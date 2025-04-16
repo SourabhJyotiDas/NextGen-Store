@@ -26,6 +26,7 @@ import {
   FiShoppingBag,
   FiUserCheck,
   FiCheckCircle,
+  FiUpload
 } from "react-icons/fi";
 import { FaUserAstronaut } from "react-icons/fa";
 import EmailVerificationComponent from "@/components/VerifivationComp";
@@ -64,8 +65,8 @@ export default function Profile() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-start space-y-4 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-4">
-          <div className="relative">
+          className="flex flex-col items-center justify-center sm:flex-row sm:items-center sm:justify-start space-y-4 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-4">
+          <div className="">
             {session?.data?.image || session?.user?.image ? (
               <Image
                 src={session?.data?.image ?? session?.user?.image}
@@ -77,19 +78,12 @@ export default function Profile() {
             ) : (
               <FaUserAstronaut className="w-24 h-24 sm:w-28 sm:h-28 text-6xl sm:text-7xl rounded-full border-4 border-blue-600 object-cover shadow-md p-1" />
             )}
-            <button
-              className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md border border-gray-300 hover:bg-gray-200 transition"
-              onClick={() => console.log("Change profile picture")}>
-              <FiEdit className="text-blue-600 cursor-pointer" />
-            </button>
           </div>
           <div className="text-center sm:text-left">
             <div className="flex items-center gap-2">
               <h2 className="text-lg sm:text-xl font-semibold">
                 {session?.data?.name}
               </h2>
-              {/* <FiCheckCircle className="text-blue-600 text-xl sm:text-2xl" /> */}
-
               {session?.data?.verify && (
                 <FiCheckCircle className="text-blue-600 text-xl sm:text-2xl" />
               )}
@@ -123,6 +117,19 @@ export default function Profile() {
           />
           <MenuItem icon={<FiStar />} label="reviews" href="/reviews" />
           <MenuItem icon={<FiShoppingBag />} label="sell" href="/sell" />
+
+          {/* New Dashboard & Upload Product Menu Items */}
+          <MenuItem
+            icon={<FiUserCheck />}
+            label="dashboard"
+            href="/dashboard"
+          />
+          <MenuItem
+            icon={<FiUpload />}
+            label="upload_product"
+            href="/dashboard/upload"
+          />
+
           <MenuItem icon={<FiHelpCircle />} label="help" href="/help" />
           <MenuItem
             icon={<FiLogOut />}

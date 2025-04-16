@@ -68,7 +68,7 @@ export default function Profile() {
           <div className="relative">
             {session?.data?.image || session?.user?.image ? (
               <Image
-                src={session?.data?.image ?? session?.user?.image }
+                src={session?.data?.image ?? session?.user?.image}
                 alt="Profile Picture"
                 width={100}
                 height={100}
@@ -98,7 +98,7 @@ export default function Profile() {
           </div>
         </motion.div>
 
-        <EmailVerificationComponent/>
+        {!session?.data?.verify && <EmailVerificationComponent />}
 
         <div className="mt-5 grid grid-cols-2 sm:grid-cols-2 gap-2">
           <MenuItem

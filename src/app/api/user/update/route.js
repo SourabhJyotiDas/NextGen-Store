@@ -39,7 +39,7 @@ export async function POST(req) {
     user.name = name || user.name;
     user.phone = phone || user.phone;
     user.gender = gender || user.gender;
-    user.profileImage = imageUrl || user.profileImage; // assuming 'url' means profile image
+    user.image = imageUrl || user.image; // assuming 'url' means profile image
 
     await user.save();
 

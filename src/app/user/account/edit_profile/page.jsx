@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react"; // make sure useEffect is imported
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { FiCamera } from "react-icons/fi";
@@ -9,20 +9,42 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import FileUpload from "@/components/fileUpload";
+import { headers } from "../../../../../next.config";
 
 export default function EditProfile() {
   const { data: session, update } = useSession();
+
+  console.log(session);
+
   const { t } = useTranslation();
 
-  const [name, setName] = useState(session?.user?.name || "");
-  const [email, setEmail] = useState(session?.user?.email || "");
-  const [phone, setPhone] = useState(session?.user?.phone || "");
-  const [gender, setGender] = useState(session?.user?.gender || "");
-  const [avatar, setAvatar] = useState(session?.user?.image || "");
+  const [userId, setUserId] = useState(session?.data?._id || "");
+
+  console.log(userId);
+
+  const [name, setName] = useState(session?.data?.name || "");
+  const [email, setEmail] = useState(session?.data?.email || "");
+  const [phone, setPhone] = useState(session?.data?.phone || "");
+  const [gender, setGender] = useState(session?.data?.gender || "");
+  const [avatar, setAvatar] = useState(
+    session?.data?.image ?? session?.user?.image
+  );
   const [isEmailModalOpen, setEmailModalOpen] = useState(false);
   const [isVerificationOpen, setVerificationOpen] = useState(false);
   const [newEmail, setNewEmail] = useState("");
-  const [verificationCode, setVerificationCode] = useState(["", "", "", "", "", ""]);
+  const [verificationCode, setVerificationCode] = useState([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ]);
+
+  const [uploadedImageUrl, setUploadedImageUrl] = useState({});
+
+  const [isEdit, setIsEdit] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const openEmailModal = () => setEmailModalOpen(true);
 
@@ -48,13 +70,57 @@ export default function EditProfile() {
     }
   };
 
-  const saveChanges = () => {
-    toast.success("Profile updated successfully!");
+  const saveChanges = async () => {
+    try {
+      if (progress !== 100 && uploadedImageUrl) {
+        toast.info("Profile picture is still uploading. Please wait...");
+        return; // Prevent saving while upload is incomplete
+      }
+  
+      const updatePromise = axios.post(
+        `/api/user/update?userId=${userId}`,
+        {
+          name,
+          phone,
+          gender,
+          imageUrl: uploadedImageUrl,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      toast.promise(updatePromise, {
+        pending: "Saving profile...",
+        success: "Profile updated successfully!",
+        error: "Failed to update profile.",
+      });
+  
+      const { data } = await updatePromise;
+  
+      if (data.success) {
+        console.log("Updated user:", data.user);
+      } else {
+        toast.error(data.message || "Update failed.");
+      }
+    } catch (error) {
+      console.error("Update Error:", error);
+      toast.error(error.response?.data?.message || "An error occurred.");
+    }
   };
-
-
-  const [showChooseFile,setShowChooseFile] = useState(false);
-
+  
+  useEffect(() => {
+    if (session?.data) {
+      setUserId(session.data._id || "");
+      setName(session.data.name || "");
+      setEmail(session.data.email || "");
+      setPhone(session.data.phone || "");
+      setGender(session.data.gender || "");
+      setAvatar(session?.data?.image ?? session?.user?.image);
+    }
+  }, [session]);
 
   return (
     <motion.div
@@ -64,24 +130,48 @@ export default function EditProfile() {
       className="min-h-screen flex justify-center items-center bg-gray-100">
       <div className="bg-white shadow-xl rounded-xl p-6 w-full max-w-md">
         <div className="flex flex-col items-center">
-          <div className="relative">
-            <Image
-              src={avatar}
-              alt="Profile"
-              width={100}
-              height={100}
-              className="rounded-full shadow-md"
-            />
+          <div
+            className="relative w-[110px] h-[110px] rounded-full flex items-center justify-center"
+            style={{
+              background:
+                progress > 0 && progress < 100
+                  ? `conic-gradient(#3b82f6 ${progress * 3.6}deg, #e5e7eb ${
+                      progress * 3.6
+                    }deg)`
+                  : "#e5e7eb",
+              transition: "background 0.3s ease-in-out",
+            }}>
+            {avatar && !isEdit && (
+              <Image
+                src={`${avatar}?tr=w-300,h-300,fo-auto`}
+                alt="Profile"
+                width={100}
+                height={100}
+                className="rounded-full border-4 border-white shadow-md"
+              />
+            )}
+            {isEdit && (
+              <Image
+                src={`${avatar}?tr=w-300,h-300,fo-auto`}
+                alt="Profile"
+                width={100}
+                height={100}
+                className="rounded-full border-4 border-white shadow-md"
+              />
+            )}
+
             <button
-              className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md"
-              onClick={() => setShowChooseFile(true)}>
-              <FiCamera className="text-blue-600" />
+              className="absolute bottom-1 right-1 px-2 py-1 bg-white border border-blue-500 rounded-full shadow"
+              onClick={() => {
+                setIsEdit(true);
+              }}>
+              <FileUpload
+                setUploadedImageUrl={setUploadedImageUrl}
+                setAvatar={setAvatar}
+                setProgress={setProgress}
+              />
             </button>
           </div>
-
-          {
-            showChooseFile && <FileUpload/>
-          }
 
           <input
             type="text"

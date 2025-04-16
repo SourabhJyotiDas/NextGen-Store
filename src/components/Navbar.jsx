@@ -13,7 +13,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
 
-
   return (
     <nav className="bg-gray-900 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -50,9 +49,9 @@ const Navbar = () => {
           {/* Authentication Links */}
           {session?.user ? (
             <Link href="/user/account" className="block py-2 px-4">
-              {session.user.image ? (
+              {session?.data?.image || session?.user?.image ? (
                 <Image
-                  src={session.user.image}
+                  src={session?.data?.image ?? session?.user?.image}
                   alt="User Profile"
                   width={32}
                   height={32}

@@ -28,6 +28,7 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 import { FaUserAstronaut } from "react-icons/fa";
+import EmailVerificationComponent from "@/components/VerifivationComp";
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -53,24 +54,21 @@ export default function Profile() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gray-50 text-gray-900 flex justify-center px-4 md:px-8 py-6"
-    >
+      className="min-h-screen bg-gray-50 text-gray-900 flex justify-center px-4 md:px-8 py-6">
       <motion.div
         initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.3 }}
-        className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-4 sm:p-6"
-      >
+        className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-4 sm:p-6">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-start space-y-4 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-4"
-        >
+          className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-start space-y-4 sm:space-y-0 sm:space-x-4 border-b border-gray-300 pb-4">
           <div className="relative">
-            {session?.data?.avatar?.url ? (
+            {session?.data?.image || session?.user?.image ? (
               <Image
-                src={session?.data?.avatar?.url}
+                src={session?.data?.image ?? session?.user?.image }
                 alt="Profile Picture"
                 width={100}
                 height={100}
@@ -81,8 +79,7 @@ export default function Profile() {
             )}
             <button
               className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md border border-gray-300 hover:bg-gray-200 transition"
-              onClick={() => console.log("Change profile picture")}
-            >
+              onClick={() => console.log("Change profile picture")}>
               <FiEdit className="text-blue-600 cursor-pointer" />
             </button>
           </div>
@@ -91,6 +88,8 @@ export default function Profile() {
               <h2 className="text-lg sm:text-xl font-semibold">
                 {session?.data?.name}
               </h2>
+              {/* <FiCheckCircle className="text-blue-600 text-xl sm:text-2xl" /> */}
+
               {session?.data?.verify && (
                 <FiCheckCircle className="text-blue-600 text-xl sm:text-2xl" />
               )}
@@ -99,19 +98,37 @@ export default function Profile() {
           </div>
         </motion.div>
 
+        <EmailVerificationComponent/>
+
         <div className="mt-5 grid grid-cols-2 sm:grid-cols-2 gap-2">
-          <MenuItem icon={<FiBox />} label="orders" href="/user/account/orders" />
+          <MenuItem
+            icon={<FiBox />}
+            label="orders"
+            href="/user/account/orders"
+          />
           <MenuItem icon={<FiHeart />} label="wishlist" href="/wishlist" />
-          <MenuItem icon={<FiSettings />} label="edit_profile" href="/user/account/edit_profile" />
+          <MenuItem
+            icon={<FiSettings />}
+            label="edit_profile"
+            href="/user/account/edit_profile"
+          />
           <MenuItem icon={<FiMapPin />} label="addresses" href="/addresses" />
           <MenuItem icon={<FiCreditCard />} label="payments" href="/payments" />
           <MenuItem icon={<FiTag />} label="coupons" href="/coupons" />
           <MenuItem icon={<FiShield />} label="privacy" href="/privacy" />
-          <MenuItem icon={<FiUserCheck />} label="membership" href="/membership" />
+          <MenuItem
+            icon={<FiUserCheck />}
+            label="membership"
+            href="/membership"
+          />
           <MenuItem icon={<FiStar />} label="reviews" href="/reviews" />
           <MenuItem icon={<FiShoppingBag />} label="sell" href="/sell" />
           <MenuItem icon={<FiHelpCircle />} label="help" href="/help" />
-          <MenuItem icon={<FiLogOut />} label="logout" onClick={() => setLogoutModalOpen(true)} />
+          <MenuItem
+            icon={<FiLogOut />}
+            label="logout"
+            onClick={() => setLogoutModalOpen(true)}
+          />
         </div>
       </motion.div>
 
@@ -120,7 +137,10 @@ export default function Profile() {
         onClose={() => setLogoutModalOpen(false)}
         onConfirm={() => {
           signOut();
-          toast.success(t("logoutSuccess"), { position: "top-center", autoClose: 2000 });
+          toast.success(t("logoutSuccess"), {
+            position: "top-center",
+            autoClose: 2000,
+          });
           setLogoutModalOpen(false);
           setLoading(true);
         }}
@@ -140,15 +160,24 @@ function MenuItem({ icon, label, href, onClick }) {
 
   return href ? (
     <motion.div {...motionProps}>
-      <Link href={href} className="flex items-center space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
+      <Link
+        href={href}
+        className="flex items-center space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
         <span className="text-gray-600 text-xl">{icon}</span>
-        <span className="text-gray-900 text-sm font-medium capitalize">{t(label)}</span>
+        <span className="text-gray-900 text-sm font-medium capitalize">
+          {t(label)}
+        </span>
       </Link>
     </motion.div>
   ) : (
-    <motion.button {...motionProps} onClick={onClick} className="flex items-center space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
+    <motion.button
+      {...motionProps}
+      onClick={onClick}
+      className="flex items-center space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
       <span className="text-gray-600 text-xl">{icon}</span>
-      <span className="text-gray-900 text-sm font-medium capitalize">{t(label)}</span>
+      <span className="text-gray-900 text-sm font-medium capitalize">
+        {t(label)}
+      </span>
     </motion.button>
   );
 }

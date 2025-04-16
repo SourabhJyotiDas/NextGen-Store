@@ -6,8 +6,12 @@ const nextConfig = {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "ik.imagekit.io", // 👈 Add this line
+      },
     ],
   },
 };
 
-module.exports = nextConfig; // Do NOT include i18n here
+module.exports = nextConfig;
